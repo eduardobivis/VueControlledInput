@@ -1,0 +1,63 @@
+<!--
+  Janeiro/2019
+  Eduardo Marinho dos Santos
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <div id="app">
+      <strong>Controlled Input: </strong><field v-model="test"></field>
+      <p><strong>Value in App.data: </strong>{{ test }}</p>
+      <button @click="changeText">Change Text by Method</button>
+    </div>
+
+    <!-- Vue and Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.22/vue.js"></script>
+
+    <!-- Components -->
+    <script>
+      Vue.component("field", {
+        props: ["value"],
+        data() {
+          return {
+            content: this.value
+          };
+        },
+        methods: {
+          handleInput(e) {
+            this.$emit("input", this.content);
+          }
+        },
+        watch: {
+          value: {
+            immediate: true,
+            handler(val) {
+              this.content = val;
+            }
+          }
+        },
+        template: `<input type="text" v-model="content" @input="handleInput" />`
+      });
+    </script>
+
+    <!-- APP -->
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          test: "Initial Value"
+        },
+        methods: {
+          changeText: function() {
+            this.test = "Value Changed by Method";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
